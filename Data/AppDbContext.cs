@@ -15,8 +15,15 @@ namespace SchoolSystem.Data
 
             modelBuilder.Entity<User>(entity =>
             {
+                entity.ToTable("users");
+                entity.Property(u => u.Id).HasColumnName("id");
+                entity.Property(u => u.Username).HasColumnName("username");
+                entity.Property(u => u.PasswordHash).HasColumnName("passwordhash");
+                entity.Property(u => u.Role).HasColumnName("role").HasConversion<string>();
+                entity.Property(u => u.FullName).HasColumnName("fullname");
+                entity.Property(u => u.Email).HasColumnName("email");
+                entity.Property(u => u.CreatedAt).HasColumnName("createdat");
                 entity.HasIndex(u => u.Username).IsUnique();
-                entity.Property(u => u.Role).HasConversion<string>();
             });
         }
     }
