@@ -7,7 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5,
+            maxRetryDelay: TimeSpan.FromSeconds(10),
+            errorCodesToAdd: null)));
 
 builder.Services.AddHttpContextAccessor();
 
@@ -25,11 +29,7 @@ builder.Services.AddScoped<AuthService>();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-}
-
+app.UseExceptionHandler("/Home/Error");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
@@ -39,11 +39,22 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-using (var scope = app.Services.CreateScope())
+const int maxRetries = 10;
+for (var retry = 0; retry < maxRetries; retry++)
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.EnsureCreated();
-    DbInitializer.Seed(db);
+    try
+    {
+        using var scope = app.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        db.Database.EnsureCreated();
+        DbInitializer.Seed(db);
+        break;
+    }
+    catch (Exception ex) when (retry < maxRetries - 1)
+    {
+        Console.WriteLine($"DB init attempt {retry + 1} failed: {ex.Message}. Retrying...");
+        Thread.Sleep(3000);
+    }
 }
 
 app.Run();

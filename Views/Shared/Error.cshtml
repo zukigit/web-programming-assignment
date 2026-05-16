@@ -1,0 +1,16 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="error-page">
+    <h1>Something went wrong</h1>
+    <p>The server encountered an internal error and could not complete your request.</p>
+    @if (Model?.ShowRequestId == true)
+    {
+        <p class="request-id">Request ID: @Model.RequestId</p>
+    }
+    <p>
+        <a href="/" class="btn btn-primary">Return to Home</a>
+    </p>
+</div>
