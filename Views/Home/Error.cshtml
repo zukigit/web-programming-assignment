@@ -1,0 +1,15 @@
+@model ErrorViewModel
+
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="error-page">
+    <h1>Error</h1>
+    <p>An error occurred while processing your request.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p><small>Request ID: @Model.RequestId</small></p>
+    }
+    <a href="/" class="btn btn-primary">Go to Home</a>
+</div>

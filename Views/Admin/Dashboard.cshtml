@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="dashboard">
+    <h1>Admin Dashboard</h1>
+    <p>Welcome, @User.FindFirst("FullName")?.Value!</p>
+
+    <div class="dashboard-grid">
+        <a href="/Admin/Users" class="card card-link">
+            <h3>User Management</h3>
+            <p>Manage all users — create, edit, and delete accounts. Assign roles.</p>
+            <span class="badge badge-admin">Admin access only</span>
+        </a>
+        <div class="card">
+            <h3>System Settings</h3>
+            <p>Configure school terms, grading scales, and system preferences.</p>
+            <span class="badge badge-admin">Admin access only</span>
+        </div>
+        <div class="card">
+            <h3>Reports</h3>
+            <p>View system-wide reports and analytics.</p>
+            <span class="badge badge-admin">Admin access only</span>
+        </div>
+        <div class="card">
+            <h3>Audit Logs</h3>
+            <p>Review activity logs and security events.</p>
+            <span class="badge badge-admin">Admin access only</span>
+        </div>
+    </div>
+</div>

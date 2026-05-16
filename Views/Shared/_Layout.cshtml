@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SchoolSystem - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header class="navbar">
+        <div class="container">
+            <a href="/" class="brand">SchoolSystem</a>
+            @if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <nav>
+                    <span class="user-info">
+                        @User.FindFirst("FullName")?.Value
+                        (@User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value)
+                    </span>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn-logout">Logout</button>
+                    </form>
+                </nav>
+            }
+        </div>
+    </header>
+
+    <main class="container">
+        @RenderBody()
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 - SchoolSystem</p>
+        </div>
+    </footer>
+</body>
+</html>

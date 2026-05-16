@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Student Dashboard";
+}
+
+<div class="dashboard">
+    <h1>Student Dashboard</h1>
+    <p>Welcome, @User.FindFirst("FullName")?.Value!</p>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>My Courses</h3>
+            <p>View your enrolled courses and schedules.</p>
+            <span class="badge badge-student">Student access only</span>
+        </div>
+        <div class="card">
+            <h3>Grades</h3>
+            <p>Check your current grades and GPA.</p>
+            <span class="badge badge-student">Student access only</span>
+        </div>
+        <div class="card">
+            <h3>Assignments</h3>
+            <p>View upcoming assignments and due dates.</p>
+            <span class="badge badge-student">Student access only</span>
+        </div>
+        <div class="card">
+            <h3>Announcements</h3>
+            <p>Read school and class announcements.</p>
+            <span class="badge badge-student">Student access only</span>
+        </div>
+    </div>
+</div>
